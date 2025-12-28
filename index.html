@@ -1,64 +1,61 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lumina Stream</title>
+    <title>Lumina Stream - Brazuca</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Mono&family=Playfair+Display&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --subtitle-color: #ffffff;
-            --subtitle-size: 24px;
-            --subtitle-font: 'Inter', sans-serif;
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0a0a0a;
-            color: #ffffff;
-            overflow-x: hidden;
-        }
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0a0a0a;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #262626;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #3f3f3f;
-        }
-        /* Subtitle Styling */
-        video::cue {
-            background: rgba(0, 0, 0, 0.6);
-            color: var(--subtitle-color);
-            font-size: var(--subtitle-size);
-            font-family: var(--subtitle-font);
-            text-shadow: 0 0 4px rgba(0,0,0,0.8);
-        }
-        @media (max-width: 640px) {
-            video::cue {
-                font-size: calc(var(--subtitle-size) * 0.7);
-            }
-        }
-    </style>
-<script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@^19.2.3",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "react/": "https://esm.sh/react@^19.2.3/",
-    "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
-    "lucide-react": "https://esm.sh/lucide-react@^0.562.0"
-  }
-}
-</script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
-<body>
+<body class="bg-black text-white">
     <div id="root"></div>
+
+    <script type="text/babel">
+        const API_KEY = 'e3dfda3388c610113ab7b79441f4b652'; // Tua chave configurada
+        const BRAZUCA_URL = 'https://brazuca-torrents.strem.fun/stream';
+
+        function App() {
+            const [busca, setBusca] = React.useState('');
+            const [filmes, setFilmes] = React.useState([]);
+
+            const pesquisar = async () => {
+                const res = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${busca}&language=pt-BR`);
+                const data = await res.json();
+                setFilmes(data.results || []);
+            };
+
+            return (
+                <div class="p-5">
+                    <h1 class="text-3xl font-bold text-yellow-500 mb-5">LUMINA</h1>
+                    <div class="flex gap-2 mb-8">
+                        <input 
+                            type="text" 
+                            class="bg-gray-800 p-2 rounded w-full text-white" 
+                            placeholder="Digite o nome do filme..."
+                            value={busca}
+                            onChange={(e) => setBusca(e.target.value)}
+                        />
+                        <button onClick={pesquisar} class="bg-yellow-500 text-black px-4 py-2 rounded font-bold">BUSCAR</button>
+                    </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        {filmes.map(filme => (
+                            <div key={filme.id} class="bg-gray-900 rounded overflow-hidden shadow-lg">
+                                <img src={`https://image.tmdb.org/t/p/w500${filme.poster_path}`} class="w-full h-64 object-cover" />
+                                <div class="p-2 text-sm font-bold truncate">{filme.title}</div>
+                                <button class="w-full bg-blue-600 py-1 text-xs">ASSISTIR (BRAZUCA)</button>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
 </body>
 </html>
+w

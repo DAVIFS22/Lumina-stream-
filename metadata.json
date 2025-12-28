@@ -1,0 +1,8 @@
+{
+  "name": "Copy of Lumina Stream - Legal Hub",
+  "description": "A professional-grade, 100% legal streaming aggregator inspired by Stremio. Access public domain movies, educational content, and legal open-source media through a modern, dark-themed interface.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
